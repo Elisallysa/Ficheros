@@ -1,7 +1,5 @@
 package models;
 
-import java.util.LinkedList;
-
 public class Show {
 
 	// ATRIBUTOS
@@ -36,6 +34,7 @@ public class Show {
 		this.listed_in = listed_in;
 		this.description = description;
 	}
+	
 	// GETTERS & SETTERS
 	public String getShow_id() {
 		return show_id;
