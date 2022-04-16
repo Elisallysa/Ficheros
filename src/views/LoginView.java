@@ -56,32 +56,32 @@ public class LoginView extends JFrame {
 		frame.setBounds(100, 100, 705, 460);
 		
 		tfUsername = new JTextField();
-		tfUsername.setBounds(244, 271, 207, 38);
+		tfUsername.setBounds(244, 247, 207, 38);
 		frame.getContentPane().add(tfUsername);
 		tfUsername.setColumns(10);
 		
 		pwfPassword = new JPasswordField();
-		pwfPassword.setBounds(244, 319, 207, 38);
+		pwfPassword.setBounds(244, 295, 207, 38);
 		frame.getContentPane().add(pwfPassword);
 		
 		lblLogin = new JLabel("Log in");
 		lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogin.setForeground(Color.WHITE);
 		lblLogin.setFont(new Font("Dubai", Font.BOLD, 25));
-		lblLogin.setBounds(245, 223, 206, 38);
+		lblLogin.setBounds(244, 199, 206, 38);
 		frame.getContentPane().add(lblLogin);
 		
 		lblNewLabel = new JLabel("New to Netflix?");
 		lblNewLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewLabel.setForeground(Color.WHITE);
 		lblNewLabel.setFont(new Font("Dubai", Font.PLAIN, 14));
-		lblNewLabel.setBounds(244, 369, 106, 27);
+		lblNewLabel.setBounds(244, 343, 106, 27);
 		frame.getContentPane().add(lblNewLabel);
 		
 		lblJoin = new JLabel("Sign up now.");
 		lblJoin.setForeground(Color.WHITE);
 		lblJoin.setFont(new Font("Dubai", Font.PLAIN, 14));
-		lblJoin.setBounds(356, 369, 106, 27);
+		lblJoin.setBounds(356, 343, 95, 27);
 		frame.getContentPane().add(lblJoin);
 		
 		lblNetflixImg = new JLabel("");
@@ -92,6 +92,13 @@ public class LoginView extends JFrame {
 		lblNetflixImg.setIcon(new ImageIcon(LoginView.class.getResource("/assets/Netflix-Logo.jpg")));
 		lblNetflixImg.setBounds(10, 10, 666, 218);
 		frame.getContentPane().add(lblNetflixImg);
+		
+		JLabel lblForgotPwd = new JLabel("Forgot your password?");
+		lblForgotPwd.setHorizontalAlignment(SwingConstants.CENTER);
+		lblForgotPwd.setForeground(Color.LIGHT_GRAY);
+		lblForgotPwd.setFont(new Font("Dialog", Font.PLAIN, 14));
+		lblForgotPwd.setBounds(244, 380, 207, 27);
+		frame.getContentPane().add(lblForgotPwd);
 	}
 	
 	public void configureUIListeners() {
