@@ -8,17 +8,28 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 import javax.swing.ListSelectionModel;
 
+import dao.ShowDAO;
 import models.Show;
 
 import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
+import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.awt.event.ActionEvent;
 
 public class SearchView {
 
 	private JFrame frame;
 	private JList<Show> list;
-	private JLabel lblNewLabel;
+	private JLabel lblSearchEngine;
+	private JTextField tfSearchBox;
+	private JComboBox<String> cbFilter;
+	private JButton btnSearch;
+	private ShowDAO showDAO;
 
 	public static void main(String[] args) {
 		new SearchView();
@@ -30,6 +41,7 @@ public class SearchView {
 	public SearchView() {
 		initialize();
 		frame.setVisible(true);
+		this.showDAO = new ShowDAO();
 	}
 
 	/**
@@ -47,22 +59,51 @@ public class SearchView {
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.getContentPane().setLayout(null);
 		
-		list = new JList<Show>();
-		list.setBounds(29, 84, 550, 328);
+		list = null;
+		list.setBackground(Color.WHITE);
+		list.setBounds(29, 148, 556, 264);
+		//list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		frame.getContentPane().add(list);
-		frame.add(new JScrollPane(list));
-		list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		//frame.getContentPane().add(new JScrollPane(list));
 		
-		lblNewLabel = new JLabel("Netflix Search Engine");
-		lblNewLabel.setFont(new Font("Dubai", Font.BOLD, 53));
-		lblNewLabel.setForeground(Color.WHITE);
-		lblNewLabel.setBounds(29, 17, 550, 73);
-		frame.getContentPane().add(lblNewLabel);
+		lblSearchEngine = new JLabel("Netflix Search Engine");
+		lblSearchEngine.setFont(new Font("Dubai", Font.BOLD, 53));
+		lblSearchEngine.setForeground(Color.WHITE);
+		lblSearchEngine.setBounds(29, 17, 550, 73);
+		frame.getContentPane().add(lblSearchEngine);
+		
+		tfSearchBox = new JTextField();
+		tfSearchBox.setFont(new Font("Dubai", Font.PLAIN, 14));
+		tfSearchBox.setBounds(29, 95, 179, 29);
+		frame.getContentPane().add(tfSearchBox);
+		tfSearchBox.setColumns(10);
+		
+		cbFilter = new JComboBox<String>();
+		cbFilter.addItem("Title");
+		cbFilter.addItem("Country");
+		cbFilter.addItem("Director");
+		cbFilter.addItem("Release year");
+		cbFilter.setFont(new Font("Dubai", Font.PLAIN, 14));
+		cbFilter.setBounds(211, 95, 186, 29);
+		frame.getContentPane().add(cbFilter);
+		
+		btnSearch = new JButton("Search");
+		btnSearch.setBackground(Color.RED);
+		btnSearch.setBorder(null);
+		btnSearch.setForeground(Color.WHITE);
+		btnSearch.setFont(new Font("Dubai", Font.BOLD, 14));
+		btnSearch.setBounds(400, 95, 179, 29);
+		frame.getContentPane().add(btnSearch);
 	}
 	
 	public void configureUIListeners() {
-		
+		btnSearch.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			JList<Show> showsList = showDAO.search(cbFilter.getSelectedIndex(), tfSearchBox.getText());
+				list = showsList;
+				
+			
+			}
+		});
 	}
-	
-
 }

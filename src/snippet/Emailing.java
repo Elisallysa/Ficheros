@@ -19,7 +19,7 @@ public class Emailing {
     static String password;
     
 	public static void main(String[] args) {
-		System.out.println(hashIt("hello3445", "1234567899"));
+		System.out.println(hashIt("hello3445", "123456789"));
     }
 	public static void mail() {
 		
@@ -58,6 +58,8 @@ public class Emailing {
             e.printStackTrace();
         }
 	}
+	
+	
 	public static String hashIt(String passwordToHash, String salt){
 	    String generatedPassword = null;
 	    try {

@@ -1,2 +1,0 @@
-email=ratatasalvaje1dam@gmail.com;
-password=Pollofrit0!;

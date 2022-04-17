@@ -12,6 +12,7 @@ import java.util.TreeSet;
 
 import dao.ShowDAO;
 import models.Show;
+import utils.CredentialsHelper;
 import views.LoginView;
 
 public class MainApp {
