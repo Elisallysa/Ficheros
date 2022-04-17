@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public abstract class AbstractDAO {
-	private final String DB_URL = "jdbc:mysql://localhost/libreria";
+	private final String DB_URL = "jdbc:mysql://localhost/netflix";
 	private final String USER = "Rawdevil";
 	private final String PASS = "Put0user22";
 	protected Connection conn;

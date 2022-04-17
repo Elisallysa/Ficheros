@@ -6,8 +6,11 @@ public class User {
 	private int iduser;
 	// Cadena de caracteres con el nombre de usuario
 	private String username;
+	private String mail;
 	// Cadena de caracteres con la contraseña del usuario
 	private String password;
+	private String activationCode;
+	private boolean activated;
 
 	// CONSTRUCTOR
 	/**
@@ -17,10 +20,28 @@ public class User {
 	 * @param username - nombre de usuario
 	 * @param password - contraseña
 	 */
-	public User(int iduser, String username, String password) {
+	public User(int iduser, String username, String mail, String password, String activationCode, boolean activated) {
 		super();
 		this.iduser = iduser;
 		this.username = username;
+		this.mail = mail;
+		this.password = password;
+		this.activationCode = activationCode;
+		this.setActivated(false);
+	}
+	
+	public User(int iduser, String mail, String password) {
+		super();
+		this.iduser = iduser;
+		this.mail = mail;
+		this.password = password;
+	}
+	
+	public User(int iduser, String username, String mail, String password) {
+		super();
+		this.iduser = iduser;
+		this.username = username;
+		this.mail = mail;
 		this.password = password;
 	}
 
@@ -41,6 +62,14 @@ public class User {
 		this.username = username;
 	}
 
+	public String getMail() {
+		return mail;
+	}
+
+	public void setMail(String mail) {
+		this.mail = mail;
+	}
+
 	public String getPassword() {
 		return password;
 	}
@@ -49,9 +78,26 @@ public class User {
 		this.password = password;
 	}
 
+	public String getActivationCode() {
+		return activationCode;
+	}
+
+	public void setActivationCode(String activationCode) {
+		this.activationCode = activationCode;
+	}
+
+	public boolean isActivated() {
+		return activated;
+	}
+
+	public void setActivated(boolean activated) {
+		this.activated = activated;
+	}
+
 	// TO STRING
 	@Override
 	public String toString() {
-		return "Usuario [iduser=" + iduser + ", username=" + username + ", password=" + password + "]";
+		return "User [iduser=" + iduser + ", username=" + username + ", mail=" + mail + ", password=" + password
+				+ ", activationCode=" + activationCode + ", activated=" + activated + "]";
 	}
 }

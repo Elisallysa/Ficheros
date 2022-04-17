@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import models.Show;
+import models.User;
 
 public class ShowDAO extends AbstractDAO {
 
@@ -46,7 +47,7 @@ public class ShowDAO extends AbstractDAO {
 				var categoria = rs.getString("rating");
 				var duracion = rs.getString("duration");
 				var generos = rs.getString("listed_in");
-				var sinopsis = rs.getString("descripcion");
+				var sinopsis = rs.getString("description");
 				Show s = new Show(id, tipo, titulo, direc, reparto, pais, fecha, estreno, categoria, duracion, generos, sinopsis);
 				shows.add(s);
 			}
@@ -107,6 +108,17 @@ public class ShowDAO extends AbstractDAO {
 			e.printStackTrace();
 		}
 		return shows;
+	}
+	
+	public boolean isStored(Show show) {
+		final String QUERY = "SELECT * FROM shows " + "WHERE show_id = '" + show.getShow_id() + "'";
+		try {
+			ResultSet rs = stmt.executeQuery(QUERY);
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 	
 }
