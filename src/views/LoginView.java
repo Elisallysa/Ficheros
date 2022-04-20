@@ -147,26 +147,26 @@ public class LoginView {
 	}
 	
 	/**
-	 * Método que obtiene el texto del campo de texto del mail de usuario y la
-	 * contraseña y comprueba que se encuentra en la BD o no.
+	 * Mï¿½todo que obtiene el texto del campo de texto del mail de usuario y la
+	 * contraseï¿½a y comprueba que se encuentra en la BD o no.
 	 */
 	public void login() {
 		String mail = tfMail.getText();
 		String password = new String(pwfPassword.getPassword());
 		usuario = new User(0, mail, password);
-		boolean loggedIn = userDAO.login(usuario); // Llamamos al método login de la clase userDAO para comprobar que el
+		boolean loggedIn = userDAO.login(usuario); // Llamamos al mï¿½todo login de la clase userDAO para comprobar que el
 													// usuario se encuentra o no en la BD
 
 		/*
 		 * Si en UsuarioDAO obtenemos un registro con los datos del usuario, loggedIn es
 		 * true y por tanto, desaparece la ventana de login y se crea una nueva del
 		 * buscador de shows de Netflix. Si no, lanza un mensaje que informa que el nombre de usuario o
-		 * contraseña son inválidos.
+		 * contraseï¿½a son invï¿½lidos.
 		 */
 		if (loggedIn) {
 			JOptionPane.showMessageDialog(btnLogin, "Login successful!");
 			frame.dispose();
-			new SearchView();
+			new SearchView(usuario);
 		} else {
 			JOptionPane.showMessageDialog(btnLogin, "Invalid E-mail or password");
 		}

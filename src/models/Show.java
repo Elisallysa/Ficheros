@@ -118,6 +118,13 @@ public class Show {
 				+ description + "]";
 	}
 	
+	public String toCSVString(String separator) {
+		return show_id + separator + type + separator + title + separator + director + separator
+				+ cast + separator + country + separator + date_added + separator + release_year
+				+ separator + rating + separator + duration + separator + listed_in + separator
+				+ description;
+	}
+	
 	
 	
 }

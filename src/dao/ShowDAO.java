@@ -100,7 +100,7 @@ public class ShowDAO extends AbstractDAO {
 				var categoria = rs.getString("rating");
 				var duracion = rs.getString("duration");
 				var generos = rs.getString("listed_in");
-				var sinopsis = rs.getString("descripcion");
+				var sinopsis = rs.getString("description");
 				Show s = new Show(id, tipo, titulo, direc, reparto, pais, fecha, estreno, categoria, duracion, generos, sinopsis);
 				shows.add(s);
 			}
@@ -120,5 +120,6 @@ public class ShowDAO extends AbstractDAO {
 		}
 		return false;
 	}
+	
 	
 }
