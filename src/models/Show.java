@@ -1,5 +1,8 @@
 package models;
 
+import java.io.PrintWriter;
+import java.nio.file.Files;
+
 public class Show {
 
 	// ATRIBUTOS
@@ -124,7 +127,6 @@ public class Show {
 				+ separator + rating + separator + duration + separator + listed_in + separator
 				+ description;
 	}
-	
 	
 	
 }

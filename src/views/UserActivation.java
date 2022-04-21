@@ -38,7 +38,7 @@ public class UserActivation extends JFrame {
 	}
 	
 	/**
-	 * Creación de la aplicación. Se inicializa, se hace visible el marco y se
+	 * Creaciï¿½n de la aplicaciï¿½n. Se inicializa, se hace visible el marco y se
 	 * reserva memoria para el usuario DAO.
 	 */
 	public UserActivation() {
@@ -57,7 +57,7 @@ public class UserActivation extends JFrame {
 	}
 
 	/**
-	 * Método que configura los componentes de la interfaz gráfica.
+	 * Mï¿½todo que configura los componentes de la interfaz grï¿½fica.
 	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setLayout(null);
@@ -103,7 +103,7 @@ public class UserActivation extends JFrame {
 		tfEmail.setColumns(10);
 		jpCentral.add(tfEmail);
 		
-		lblPassword = new JLabel("Password");
+		lblPassword = new JLabel("New password");
 		lblPassword.setBounds(39, 135, 78, 13);
 		lblPassword.setForeground(Color.WHITE);
 		lblPassword.setFont(new Font("Dialog", Font.PLAIN, 10));

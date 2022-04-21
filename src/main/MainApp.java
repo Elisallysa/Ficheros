@@ -19,20 +19,24 @@ public class MainApp {
 
 	public static void main(String[] args) {
 
-		new LoginView();
+		//new LoginView();
+		
+		System.out.println("\t");
+		String tab = "\t";
+		System.out.println(tab.isBlank());
 
 	}
 	
 	/**
-	 * Método para leer el archivo .csv, crear Objetos de la clase Show y almacenarlos en la BD.
-	 * Solo se ejecutará una vez, pero se mantiene aquí para futuras consultas.
+	 * Mï¿½todo para leer el archivo .csv, crear Objetos de la clase Show y almacenarlos en la BD.
+	 * Solo se ejecutarï¿½ una vez, pero se mantiene aquï¿½ para futuras consultas.
 	 */
 	public void insertAllShows() {
 		File f = new File("netflix_titles.csv");
 		Scanner sc = null;
 		String[] show = new String[12];
 		
-		// Comparador para ordenar los shows por año por si se necesitara:
+		// Comparador para ordenar los shows por aï¿½o por si se necesitara:
 		// Comparator<Show> ComparadorYear = (Show show1, Show show2) -> show1.getRelease_year().compareTo(show2.getRelease_year());
 		
 		List<Show> shows = new LinkedList<Show>();
@@ -48,7 +52,7 @@ public class MainApp {
 				show = s.split(",(?=(?:[^\\\"]*\\\"[^\\\"]*\\\")*[^\\\"]*$)", -1);
 
 				String id = show[0];
-				String type = show[1].replace('"', '_'); // Reemplazamos las comillas porque producen conflicto en la inserción en la BD.
+				String type = show[1].replace('"', '_'); // Reemplazamos las comillas porque producen conflicto en la inserciï¿½n en la BD.
 				String title = show[2].replace('"', '_');
 				String director = show[3].replace('"', '_');
 				String cast = show[4].replace('"', '_');
@@ -69,7 +73,7 @@ public class MainApp {
 					System.out.println(infoShow);
 				showDAO.insert(infoShow);
 				}
-				// Para añadir los shows a la lista:
+				// Para aï¿½adir los shows a la lista:
 				// shows.add(infoShow);
 				
 			}
