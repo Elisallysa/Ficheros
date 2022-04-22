@@ -2,12 +2,12 @@ package models;
 
 public class User {
 	// ATRIBUTOS
-	// Número entero identificativo único del usuario
+	// Nï¿½mero entero identificativo ï¿½nico del usuario
 	private int iduser;
 	// Cadena de caracteres con el nombre de usuario
 	private String username;
 	private String mail;
-	// Cadena de caracteres con la contraseña del usuario
+	// Cadena de caracteres con la contraseï¿½a del usuario
 	private String password;
 	private String activationCode;
 	private boolean activated;
@@ -16,9 +16,9 @@ public class User {
 	/**
 	 * Constructor de User
 	 * 
-	 * @param iduser   - número identificativo único
+	 * @param iduser   - nï¿½mero identificativo ï¿½nico
 	 * @param username - nombre de usuario
-	 * @param password - contraseña
+	 * @param password - contraseï¿½a
 	 */
 	public User(int iduser, String username, String mail, String password, String activationCode, boolean activated) {
 		super();

@@ -27,9 +27,9 @@ public class FavShowsReaderAndWriter {
 			
 			if (!newFile) {
 				if (!separator.isBlank()) {
-					fw.write("SEPARATOR:"+separator);
+					fw.write("SEPARATOR:"+separator+"\n");
 				} else {
-					fw.write("SEPARADOR:TABULATOR");
+					fw.write("SEPARADOR:TABULATOR\n");
 				}
 				
 			}

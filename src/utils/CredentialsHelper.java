@@ -35,30 +35,12 @@ public class CredentialsHelper {
 		
 		JsonObject jsonObject = JsonParser.parseString(appsettingsContent).getAsJsonObject();
 		
-		System.out.println(jsonObject.get(keyword).getAsString());
 		return jsonObject.get(keyword).getAsString();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
 		return null;
-	}
-	
-	public static String hashIt(String passwordToHash, String salt){
-	    String generatedPassword = null;
-	    try {
-	        MessageDigest md = MessageDigest.getInstance("SHA-512");
-	        md.update(salt.getBytes(StandardCharsets.UTF_8));
-	        byte[] bytes = md.digest(passwordToHash.getBytes(StandardCharsets.UTF_8));
-	        StringBuilder sb = new StringBuilder();
-	        for(int i=0; i< bytes.length ;i++){
-	            sb.append(Integer.toString((bytes[i] & 0xff) + 0x100, 16).substring(1));
-	        }
-	        generatedPassword = sb.toString();
-	    } catch (NoSuchAlgorithmException e) {
-	        e.printStackTrace();
-	    }
-	    return generatedPassword;
 	}
 
 }

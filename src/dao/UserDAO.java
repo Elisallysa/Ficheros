@@ -9,9 +9,9 @@ public class UserDAO extends AbstractDAO {
 
 	/**
 	 * Comprueba que hay un registro en la BD con un nombre de usuario y una
-	 * contraseña
+	 * contraseï¿½a
 	 * 
-	 * @param usuario - Objeto usuario con un nombre y contraseña
+	 * @param usuario - Objeto usuario con un nombre y contraseï¿½a
 	 * @return - true: si el usuario se encuentra en la BD; false: si no se
 	 *         encuentra en la BD
 	 */
@@ -29,7 +29,7 @@ public class UserDAO extends AbstractDAO {
 
 	/**
 	 * Introduce un nuevo registro en la tabla Users de la BD con un nombre de
-	 * usuario y una contraseña
+	 * usuario y una contraseï¿½a
 	 * 
 	 * @param usuario - Objeto user que se quiere introducir en la BD.
 	 */
@@ -49,7 +49,7 @@ public class UserDAO extends AbstractDAO {
 	 * @param usuario - Objeto de User del que se quiere comprobar el mail de
 	 *                registro.
 	 * @return true: un usuario con el mismo mail existe en la BD; false: no existe
-	 *         ningún usuario registrado con ese mail.
+	 *         ningï¿½n usuario registrado con ese mail.
 	 */
 	public boolean isUser(User usuario) {
 		final String QUERY = "SELECT * FROM users " + "WHERE mail = '" + usuario.getMail() + "'";
@@ -61,4 +61,76 @@ public class UserDAO extends AbstractDAO {
 		}
 		return false;
 	}
+	
+	public boolean isActivated(User usuario) {
+		final String QUERY = "SELECT * FROM users " + "WHERE mail = '" + usuario.getMail() + "' AND activated = 1";
+		try {
+			ResultSet rs = stmt.executeQuery(QUERY);
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public void changePassword(User usuario, String inputCode) {
+		final String QUERY = "SELECT * FROM users " + "WHERE mail = '" + usuario.getMail() + "' AND activation_code = '" + inputCode + "'";
+		final String UPDATE = "UPDATE users SET password = '"+usuario.getPassword()+"' WHERE mail = '"
+				+ usuario.getMail() + "' AND activation_code = '" + inputCode + "'";
+		try {
+			ResultSet rs = stmt.executeQuery(QUERY);
+			if (rs.next()) {
+			stmt.executeUpdate(UPDATE);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void setActivationCode(User usuario, String code) {
+		final String UPDATE = "UPDATE users SET activation_code = "+code+" WHERE mail = '"
+				+ usuario.getMail() +"'";
+		try {
+			stmt.executeUpdate(UPDATE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public boolean checkActivationCode(User usuario, String inputCode) {
+		final String QUERY = "SELECT activated FROM users " + "WHERE mail = '" + usuario.getMail() + "'  AND activation_code = '" + inputCode+ "'";
+		try {
+			ResultSet rs = stmt.executeQuery(QUERY);
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public String getUsername(User usuario) {
+		final String QUERY = "SELECT username FROM users " + "WHERE mail = '" + usuario.getMail() + "'";
+		try {
+			ResultSet rs = stmt.executeQuery(QUERY);
+			if (rs.next()) {
+				return rs.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	public void activateUser(User usuario, String inputCode) {
+		final String UPDATE = "UPDATE users SET activated = 1 WHERE mail = '"
+				+ usuario.getMail() + "' AND activation_code = '" + inputCode + "'";
+		try {
+			stmt.executeUpdate(UPDATE);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+	}
+	
+	
 }

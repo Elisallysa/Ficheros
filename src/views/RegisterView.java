@@ -9,6 +9,10 @@ import java.awt.Color;
 
 import dao.UserDAO;
 import models.User;
+import utils.ActivationCodeHelper;
+import utils.CredentialsHelper;
+import utils.EmailHelper;
+import utils.PasswordHasher;
 
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -37,12 +41,8 @@ public class RegisterView {
 	private UserDAO userDAO;
 	private User user;
 	
-	public static void main(String[] args) {
-		new RegisterView();
-	}
-	
 	/**
-	 * Creación de la aplicación. Se inicializa, se hace visible el marco y se
+	 * Creaciï¿½n de la aplicaciï¿½n. Se inicializa, se hace visible el marco y se
 	 * reserva memoria para el usuario DAO.
 	 */
 	public RegisterView() {
@@ -61,7 +61,7 @@ public class RegisterView {
 	}
 
 	/**
-	 * Método que configura los componentes de la interfaz gráfica.
+	 * Mï¿½todo que configura los componentes de la interfaz grï¿½fica.
 	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setLayout(null);
@@ -149,28 +149,33 @@ public class RegisterView {
 		jpCentral.add(btnCreateAccount);
 		
 		
-		
-		
-		
 	}
 	
 	public void configureUIListeners() {
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				
 				String username = tfUsername.getText();
 				String mail = tfEmail.getText();
-				String password = new String(pwfPassword.getPassword());
+				String password = new String (pwfPassword.getPassword());
 				String confirmedPassword = new String(pwfConfirmPassword.getPassword());
 
 				if (!username.isEmpty() && !mail.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) { // Todos los campos
-					user = new User(0, username, mail, password);																							// deben tener texto
+					user = new User(0, username, mail, PasswordHasher.hashIt(new String(pwfPassword.getPassword()), "123456789")); // deben tener texto
+					
+					
+					
 					if (!userDAO.isUser(user)) {
-						if (password.equals(confirmedPassword)) { // Si la contraseña es igual a la contraseña confirmada se
+						if (password.equals(confirmedPassword)) { // Si la contraseï¿½a es igual a la contraseï¿½a confirmada se
 																// registra el usuario
 						
 						userDAO.register(user);
-						JOptionPane.showMessageDialog(btnCreateAccount, "Thanks for joining!");
-						new LoginView();
+						String actCode = ActivationCodeHelper.generateActivationCode();
+						ActivationCodeHelper.setActivationCode(user, actCode);
+						EmailHelper.SendWelcome(user.getMail(), actCode);
+						JOptionPane.showMessageDialog(btnCreateAccount, "You received a code to activate your account.");
+						new UserActivationView(); 
 						frame.dispose();
 					} else {
 						JOptionPane.showMessageDialog(btnCreateAccount, "Passwords do not match.");
@@ -192,5 +197,6 @@ public class RegisterView {
 			}
 		});
 	}
+	
 }
 	

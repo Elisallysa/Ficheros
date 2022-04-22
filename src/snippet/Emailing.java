@@ -15,11 +15,11 @@ import javax.mail.internet.MimeMessage;
 
 public class Emailing {
 
-	static String username;
-    static String password;
+	static String username = "ratatasalvaje1dam@gmail.com";
+    static String password = "Pollofrit0!";
     
 	public static void main(String[] args) {
-		System.out.println(hashIt("hello3445", "123456789"));
+		mail();
     }
 	public static void mail() {
 		
@@ -41,10 +41,10 @@ public class Emailing {
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("from@gmail.com"));
+            message.setFrom(new InternetAddress("ratatasalvaje1dam@gmail.com"));
             message.setRecipients(
                     Message.RecipientType.TO,
-                    InternetAddress.parse("a_elisa.rodriguez.villa@iespablopicasso.es")
+                    InternetAddress.parse("aerodriguez4@gmail.com")
             );
             message.setSubject("Testing Gmail TLS");
             message.setText("Dear Mail Crawler,"

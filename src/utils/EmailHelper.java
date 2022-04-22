@@ -10,14 +10,10 @@ import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
-import dao.UserDAO;
-import models.User;
-
 public class EmailHelper {
 
-	private UserDAO userDAO;
-	static String username;
-	static String password;
+	static String username = CredentialsHelper.readUserDB();
+	static String password = CredentialsHelper.readPasswordDB();
 	
 	public static void SendForgotPassword(String to) {
 		String forgotSubject = "Confimation Code";
@@ -25,10 +21,16 @@ public class EmailHelper {
 		SendEmail(forgotSubject, forgotTemplate, to);
 	}
 	
-	public static void SendWelcome(String to) {
+	public static void SendWelcome(String to, String activationCode) {
 		String welcomeSubject = "Welcome aboard!";
-		String welcomeTemplate = "Thanks for joining!\nGo and search your favourite shows now!";
+		String welcomeTemplate = "Thanks for joining!\nTo get access to our application, please activate your account with this code: "+activationCode+"";
 		SendEmail(welcomeSubject, welcomeTemplate, to);
+	}
+	
+	public static void SendNewActivationCode(String to, String activationCode) {
+		String newCodeSubject = "Hi again!";
+		String newCodeTemplate = "This is your new activation code: "+activationCode+"";
+		SendEmail(newCodeSubject, newCodeTemplate, to);
 	}
 	
 	private static void SendEmail(String subject, String template, String to) {
@@ -50,7 +52,7 @@ public class EmailHelper {
         try {
 
             Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("from@gmail.com"));
+            message.setFrom(new InternetAddress("infonetflix@mail.com"));
             message.setRecipients(
                     Message.RecipientType.TO,
                     InternetAddress.parse(to)
@@ -60,10 +62,9 @@ public class EmailHelper {
 
             Transport.send(message);
 
-            System.out.println("Done");
-
         } catch (MessagingException e) {
             e.printStackTrace();
         }
 	}
+	
 	}

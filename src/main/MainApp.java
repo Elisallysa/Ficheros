@@ -19,17 +19,13 @@ public class MainApp {
 
 	public static void main(String[] args) {
 
-		//new LoginView();
-		
-		System.out.println("\t");
-		String tab = "\t";
-		System.out.println(tab.isBlank());
+		new LoginView();
 
 	}
 	
 	/**
-	 * M�todo para leer el archivo .csv, crear Objetos de la clase Show y almacenarlos en la BD.
-	 * Solo se ejecutar� una vez, pero se mantiene aqu� para futuras consultas.
+	 * Método para leer el archivo .csv, crear Objetos de la clase Show y almacenarlos en la BD.
+	 * Solo se ejecutará una vez, pero se mantiene aquí para futuras consultas.
 	 */
 	public void insertAllShows() {
 		File f = new File("netflix_titles.csv");

@@ -2,13 +2,20 @@ package views;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import java.awt.Color;
+import java.awt.Cursor;
+
 import javax.swing.border.BevelBorder;
 
 import dao.UserDAO;
 import main.MainApp;
+import models.User;
+import utils.ActivationCodeHelper;
+import utils.EmailHelper;
+import utils.PasswordHasher;
 
 import java.awt.Font;
 import java.awt.Insets;
@@ -19,6 +26,8 @@ import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 @SuppressWarnings("serial")
 public class ForgotPassword extends JFrame {
@@ -28,16 +37,14 @@ public class ForgotPassword extends JFrame {
 	private JPanel jpCentral;
 	private JLabel lblForgotPassword;
 	private JLabel lblEmail;
-	private JLabel lblInsertCode;
 	private JButton btnReceiveCode;
 	private JButton btnBackToLogin;
 	private JLabel lblBackground;
 	private UserDAO userDAO;
+	private User user;
 	private JPanel panel;
 	private JLabel lbl_fondoSeries;
-	private JTextField tfCode;
-	private JLabel lblEmail_1;
-	private JTextField textField;
+	private JLabel lblGoToChangePwd;
 	private JButton btnChangePassword;
 	private JLabel lblDidntGetCode;
 
@@ -46,7 +53,7 @@ public class ForgotPassword extends JFrame {
 	}
 
 	/**
-	 * Creación de la aplicación. Se inicializa, se hace visible el marco y se
+	 * Creaciï¿½n de la aplicaciï¿½n. Se inicializa, se hace visible el marco y se
 	 * reserva memoria para el usuario DAO.
 	 */
 	public ForgotPassword() {
@@ -65,7 +72,7 @@ public class ForgotPassword extends JFrame {
 	}
 
 	/**
-	 * Método que configura los componentes de la interfaz gráfica.
+	 * Mï¿½todo que configura los componentes de la interfaz grï¿½fica.
 	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -107,12 +114,6 @@ public class ForgotPassword extends JFrame {
 		tfEmail.setColumns(10);
 		jpCentral.add(tfEmail);
 
-		lblInsertCode = new JLabel("Insert code here");
-		lblInsertCode.setBounds(39, 222, 78, 13);
-		lblInsertCode.setForeground(Color.WHITE);
-		lblInsertCode.setFont(new Font("Dialog", Font.PLAIN, 10));
-		jpCentral.add(lblInsertCode);
-
 		btnReceiveCode = new JButton("Receive code");
 		btnReceiveCode.setBounds(39, 118, 222, 32);
 		btnReceiveCode.setBorder(null);
@@ -121,18 +122,12 @@ public class ForgotPassword extends JFrame {
 		btnReceiveCode.setForeground(Color.WHITE);
 		jpCentral.add(btnReceiveCode);
 
-		tfCode = new JTextField();
-		tfCode.setFont(new Font("Dialog", Font.PLAIN, 18));
-		tfCode.setColumns(10);
-		tfCode.setBounds(39, 236, 222, 32);
-		jpCentral.add(tfCode);
-
 		btnChangePassword = new JButton("Change password");
 		btnChangePassword.setForeground(Color.WHITE);
 		btnChangePassword.setFont(new Font("Dialog", Font.BOLD, 15));
 		btnChangePassword.setBorder(null);
 		btnChangePassword.setBackground(Color.RED);
-		btnChangePassword.setBounds(39, 276, 222, 32);
+		btnChangePassword.setBounds(39, 243, 222, 32);
 		jpCentral.add(btnChangePassword);
 
 		lblDidntGetCode = new JLabel("I didn't get my code");
@@ -141,19 +136,14 @@ public class ForgotPassword extends JFrame {
 		lblDidntGetCode.setForeground(Color.LIGHT_GRAY);
 		lblDidntGetCode.setFont(new Font("Dialog", Font.PLAIN, 10));
 		lblDidntGetCode.setBounds(146, 156, 115, 13);
+		lblDidntGetCode.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		jpCentral.add(lblDidntGetCode);
 
-		lblEmail_1 = new JLabel("E-mail");
-		lblEmail_1.setForeground(Color.WHITE);
-		lblEmail_1.setFont(new Font("Dialog", Font.PLAIN, 10));
-		lblEmail_1.setBounds(39, 179, 78, 13);
-		jpCentral.add(lblEmail_1);
-
-		textField = new JTextField();
-		textField.setFont(new Font("Dialog", Font.PLAIN, 18));
-		textField.setColumns(10);
-		textField.setBounds(39, 191, 222, 32);
-		jpCentral.add(textField);
+		lblGoToChangePwd = new JLabel("If you got your code, click here:");
+		lblGoToChangePwd.setForeground(Color.WHITE);
+		lblGoToChangePwd.setFont(new Font("Dialog", Font.PLAIN, 10));
+		lblGoToChangePwd.setBounds(39, 228, 222, 13);
+		jpCentral.add(lblGoToChangePwd);
 
 		lblBackground = new JLabel("");
 		lblBackground.setBounds(0, 0, 640, 353);
@@ -177,6 +167,43 @@ public class ForgotPassword extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
 				new LoginView();
+			}
+		});
+		
+		btnReceiveCode.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				user = new User(0, tfEmail.getText(), null);
+				
+				if (userDAO.isUser(user)) {
+					if (userDAO.isActivated(user)) {
+					EmailHelper.SendForgotPassword(tfEmail.getText());
+					JOptionPane.showMessageDialog(btnReceiveCode, "You got your activation code in your mailbox");
+					} else {
+					JOptionPane.showMessageDialog(btnReceiveCode, "This user is not yet activated. Before reseting your password, please activate your account with the 6-digit code we sent you to your personal E-Mail at the moment of registering.");
+					new UserActivationView();
+					frame.dispose();
+					}
+				} else {
+					JOptionPane.showMessageDialog(btnReceiveCode, "That user is not registered in our database.");
+				}
+				
+				
+			}
+		});
+		
+		lblDidntGetCode.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+			JOptionPane.showMessageDialog(lblDidntGetCode, "Close the application and try again later!");
+			}
+		});
+		
+		btnChangePassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				new ChangePasswordView();
+				frame.dispose();
 			}
 		});
 

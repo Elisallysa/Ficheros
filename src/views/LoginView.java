@@ -8,6 +8,8 @@ import javax.swing.SwingConstants;
 
 import dao.UserDAO;
 import models.User;
+import utils.CredentialsHelper;
+import utils.PasswordHasher;
 
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
@@ -18,6 +20,7 @@ import javax.swing.JButton;
 
 import javax.swing.DebugGraphics;
 import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
@@ -95,6 +98,7 @@ public class LoginView {
 		lblJoin.setForeground(new Color(30, 144, 255));
 		lblJoin.setFont(new Font("Dubai", Font.PLAIN, 14));
 		lblJoin.setBounds(356, 403, 95, 27);
+		lblJoin.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		frame.getContentPane().add(lblJoin);
 		
 		lblNetflixImg = new JLabel("");
@@ -111,6 +115,7 @@ public class LoginView {
 		lblForgotPwd.setForeground(Color.LIGHT_GRAY);
 		lblForgotPwd.setFont(new Font("Dialog", Font.PLAIN, 14));
 		lblForgotPwd.setBounds(244, 426, 207, 27);
+		lblForgotPwd.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		frame.getContentPane().add(lblForgotPwd);
 		
 		btnLogin = new JButton("Log in");
@@ -125,7 +130,7 @@ public class LoginView {
 	public void configureUIListeners() {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			login();
+				login();
 			}
 		});
 		
@@ -153,7 +158,7 @@ public class LoginView {
 	public void login() {
 		String mail = tfMail.getText();
 		String password = new String(pwfPassword.getPassword());
-		usuario = new User(0, mail, password);
+		usuario = new User(0, mail, PasswordHasher.hashIt(password, "123456789"));
 		boolean loggedIn = userDAO.login(usuario); // Llamamos al m�todo login de la clase userDAO para comprobar que el
 													// usuario se encuentra o no en la BD
 
@@ -163,10 +168,14 @@ public class LoginView {
 		 * buscador de shows de Netflix. Si no, lanza un mensaje que informa que el nombre de usuario o
 		 * contrase�a son inv�lidos.
 		 */
-		if (loggedIn) {
+		if (loggedIn && userDAO.isActivated(usuario)) {
 			JOptionPane.showMessageDialog(btnLogin, "Login successful!");
+			new SearchView(userDAO.getUsername(usuario));
 			frame.dispose();
-			new SearchView(usuario);
+		} else if (loggedIn && !userDAO.isActivated(usuario)){
+			JOptionPane.showMessageDialog(btnLogin, "User activation pending. Please activate your account.");
+			new UserActivationView();
+			frame.dispose();
 		} else {
 			JOptionPane.showMessageDialog(btnLogin, "Invalid E-mail or password");
 		}

@@ -60,21 +60,17 @@ public class SearchView {
 	private ArrayList<Show> showsList;
 	private ArrayList<Show> selectedShows;
 	private ListModel<String> defaultStringListModel;
-	private User usuarioActivo;
 	private FavShowsReaderAndWriter fsw;
-
-	public static void main(String[] args) {
-		new SearchView(new User(0, "eli", null, "123"));
-	}
+	private String activeUser;
 
 	/**
 	 * Create the application.
 	 */
-	public SearchView(User usuario) {
-		this.usuarioActivo = usuario;
+	public SearchView(String username) {
 		this.fsw = new FavShowsReaderAndWriter();
 		this.selectedShows = new ArrayList<Show>();
 		this.showsList = new ArrayList<Show>();
+		this.activeUser = username;
 		initialize();
 		frame.setVisible(true);
 		this.showDAO = new ShowDAO();
@@ -167,13 +163,13 @@ public class SearchView {
 				String fileName = JOptionPane.showInputDialog("Type file's name:");
 				String separator = "";
 
-				if (fileExists(usuarioActivo.getUsername(), fileName)) {
-					separator = getDataSeparator(usuarioActivo.getUsername(), fileName);
+				if (fileExists(activeUser, fileName)) {
+					separator = getDataSeparator(activeUser, fileName);
 				} else {
 					String[] choices = { ",", ";", "Tabulator" };
 					String selectedSeparator = (String) JOptionPane.showInputDialog(null, "Choose your data separator:",
 							"Separator selector", JOptionPane.QUESTION_MESSAGE, null, choices, choices[0]);
-					if (selectedSeparator.equals("Tabulador")) {
+					if (selectedSeparator.equals("Tabulator")) {
 						separator = "\t";
 					} else {
 						separator = selectedSeparator;
@@ -189,7 +185,7 @@ public class SearchView {
 			public void mouseClicked(MouseEvent e) {
 				String fileName = JOptionPane.showInputDialog("What favs file do you want to see?");
 
-				if (fileExists(usuarioActivo.getUsername(), fileName)) {
+				if (fileExists(activeUser, fileName)) {
 					updateJListWithFavs(fileName);
 				} else {
 					JOptionPane.showInternalMessageDialog(lblMyFavs, "That file doesn't exist.");
@@ -213,7 +209,7 @@ public class SearchView {
 	public void updateJListWithFavs(String filename) {
 
 		defaultStringListModel = new DefaultListModel<String>();
-		for (String s : fsw.getFavList(usuarioActivo.getUsername(), filename)) {
+		for (String s : fsw.getFavList(activeUser, filename)) {
 			((DefaultListModel<String>) defaultStringListModel).add(0, s);
 		}
 		jlShowList.setModel(defaultStringListModel);
@@ -245,14 +241,14 @@ public class SearchView {
 																										// index value
 																										// is selected
 
-			fsw.addFavShow(this.selectedShows, usuarioActivo.getUsername(), fileName, separador);
+			fsw.addFavShow(this.selectedShows, activeUser, fileName, separador);
 
 		}
 		this.selectedShows.clear();
 	}
 
-	public boolean fileExists(String username, String filename) {
-		return new File("src/assets/userFiles/" + username + "_" + filename + ".csv").exists();
+	public boolean fileExists(String usuarioActivo, String filename) {
+		return new File("src/assets/userFiles/" + usuarioActivo + "_" + filename + ".csv").exists();
 	}
 
 	public String getDataSeparator(String username, String filename) {
