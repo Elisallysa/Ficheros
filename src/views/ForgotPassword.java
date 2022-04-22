@@ -8,14 +8,9 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Cursor;
 
-import javax.swing.border.BevelBorder;
-
 import dao.UserDAO;
-import main.MainApp;
 import models.User;
-import utils.ActivationCodeHelper;
 import utils.EmailHelper;
-import utils.PasswordHasher;
 
 import java.awt.Font;
 import java.awt.Insets;
@@ -23,7 +18,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
@@ -169,37 +163,36 @@ public class ForgotPassword extends JFrame {
 				new LoginView();
 			}
 		});
-		
+
 		btnReceiveCode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
 				user = new User(0, tfEmail.getText(), null);
-				
+
 				if (userDAO.isUser(user)) {
 					if (userDAO.isActivated(user)) {
-					EmailHelper.SendForgotPassword(tfEmail.getText());
-					JOptionPane.showMessageDialog(btnReceiveCode, "You got your activation code in your mailbox");
+						EmailHelper.SendForgotPassword(tfEmail.getText());
+						JOptionPane.showMessageDialog(btnReceiveCode, "You got your activation code in your mailbox");
 					} else {
-					JOptionPane.showMessageDialog(btnReceiveCode, "This user is not yet activated. Before reseting your password, please activate your account with the 6-digit code we sent you to your personal E-Mail at the moment of registering.");
-					new UserActivationView();
-					frame.dispose();
+						JOptionPane.showMessageDialog(btnReceiveCode,
+								"This user is not yet activated. Before reseting your password, please activate your account with the 6-digit code we sent you to your personal E-Mail at the moment of registering.");
+						new UserActivationView();
+						frame.dispose();
 					}
 				} else {
 					JOptionPane.showMessageDialog(btnReceiveCode, "That user is not registered in our database.");
 				}
-				
-				
+
 			}
 		});
-		
+
 		lblDidntGetCode.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			JOptionPane.showMessageDialog(lblDidntGetCode, "Close the application and try again later!");
+				JOptionPane.showMessageDialog(lblDidntGetCode, "Close the application and try again later!");
 			}
 		});
-		
+
 		btnChangePassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ChangePasswordView();

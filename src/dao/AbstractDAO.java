@@ -11,11 +11,11 @@ public abstract class AbstractDAO {
 	private final String PASS = "Put0user22";
 	protected Connection conn;
 	protected Statement stmt;
-	
+
 	public AbstractDAO() {
 		try {
 			this.conn = DriverManager.getConnection(DB_URL, USER, PASS);
-			this.stmt = conn.createStatement();	
+			this.stmt = conn.createStatement();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -29,14 +29,14 @@ public class User {
 		this.activationCode = activationCode;
 		this.setActivated(false);
 	}
-	
+
 	public User(int iduser, String mail, String password) {
 		super();
 		this.iduser = iduser;
 		this.mail = mail;
 		this.password = password;
 	}
-	
+
 	public User(int iduser, String username, String mail, String password) {
 		super();
 		this.iduser = iduser;

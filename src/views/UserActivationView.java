@@ -8,10 +8,7 @@ import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Cursor;
 
-import javax.swing.border.BevelBorder;
-
 import dao.UserDAO;
-import main.MainApp;
 import models.User;
 import utils.ActivationCodeHelper;
 import utils.EmailHelper;
@@ -20,7 +17,6 @@ import java.awt.Font;
 import java.awt.Insets;
 
 import javax.swing.JTextField;
-import javax.swing.JPasswordField;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -28,7 +24,6 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-@SuppressWarnings("serial")
 public class UserActivationView {
 
 	private JFrame frame;
@@ -128,7 +123,7 @@ public class UserActivationView {
 		jpCentral.add(lblDontHaveCode);
 
 		lblSendAgain = new JLabel("Send again.");
-		
+
 		lblSendAgain.setHorizontalAlignment(SwingConstants.CENTER);
 		lblSendAgain.setForeground(Color.LIGHT_GRAY);
 		lblSendAgain.setFont(new Font("Dialog", Font.PLAIN, 10));
@@ -154,11 +149,11 @@ public class UserActivationView {
 		lbl_fondoSeries.setIcon(new ImageIcon(UserActivationView.class.getResource("/assets/netflix-series.jpg")));
 		lbl_fondoSeries.setBounds(0, 0, 633, 353);
 		panel.add(lbl_fondoSeries);
-		
-				lblBackground = new JLabel("");
-				lblBackground.setIcon(new ImageIcon(UserActivationView.class.getResource("/assets/netflix-series.jpg")));
-				lblBackground.setBounds(0, 0, 640, 353);
-				frame.getContentPane().add(lblBackground);
+
+		lblBackground = new JLabel("");
+		lblBackground.setIcon(new ImageIcon(UserActivationView.class.getResource("/assets/netflix-series.jpg")));
+		lblBackground.setBounds(0, 0, 640, 353);
+		frame.getContentPane().add(lblBackground);
 
 	}
 
@@ -182,38 +177,40 @@ public class UserActivationView {
 
 			}
 		});
-		
+
 		lblSendAgain.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				int option = JOptionPane.showConfirmDialog(frame, "Would you like to get another code?",
-						"Resend code", JOptionPane.YES_NO_OPTION);
+
+				int option = JOptionPane.showConfirmDialog(frame, "Would you like to get another code?", "Resend code",
+						JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
 					if (!tfEmail.getText().isEmpty()) {
 						user = new User(0, tfEmail.getText(), null);
-						
+
 						if (userDAO.isUser(user)) {
 							String newCode = ActivationCodeHelper.generateActivationCode();
 							ActivationCodeHelper.setActivationCode(user, newCode);
 							EmailHelper.SendNewActivationCode(user.getMail(), newCode);
 							JOptionPane.showMessageDialog(lblSendAgain, "New code sent!");
 						} else {
-							JOptionPane.showMessageDialog(lblSendAgain, "This user is not registered or the E-Mail address is not valid.");
+							JOptionPane.showMessageDialog(lblSendAgain,
+									"This user is not registered or the E-Mail address is not valid.");
 						}
-						
+
 					} else {
-						JOptionPane.showMessageDialog(lblSendAgain, "Please introduce an E-Mail address in the text field.");
+						JOptionPane.showMessageDialog(lblSendAgain,
+								"Please introduce an E-Mail address in the text field.");
 					}
-					
+
 				}
 			}
 		});
-		
+
 		btnBackToLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			new LoginView();
-			frame.dispose();
+				new LoginView();
+				frame.dispose();
 			}
 		});
 

@@ -1,21 +1,14 @@
 package views;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ListSelectionModel;
 
 import dao.ShowDAO;
 import models.Show;
-import models.User;
 import utils.FavShowsReaderAndWriter;
 
-import java.awt.BorderLayout;
 import javax.swing.JLabel;
 import java.awt.Font;
 import javax.swing.JTextField;
@@ -25,23 +18,11 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.ObjectInputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.awt.event.ActionEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.ItemEvent;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JScrollBar;
 import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Rectangle;
-import javax.swing.DebugGraphics;
-import java.awt.event.MouseMotionAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
@@ -91,7 +72,7 @@ public class SearchView {
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.getContentPane().setLayout(null);
 
-		jlShowList = new JList();
+		jlShowList = new JList<String>();
 		jlShowList.setVisibleRowCount(10);
 		jlShowList.setSelectionBackground(new Color(0, 206, 209));
 		jlShowList.setBounds(29, 134, 742, 275);
@@ -229,7 +210,6 @@ public class SearchView {
 	public void addFavourites(String separador, String fileName) {
 
 		int[] totalIndices = jlShowList.getSelectedIndices();
-		Show show = this.showsList.get(jlShowList.getSelectedIndices()[0]);
 
 		for (int i = 0; i < totalIndices.length; i++) {
 

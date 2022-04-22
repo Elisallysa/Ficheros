@@ -16,8 +16,8 @@ public class UserDAO extends AbstractDAO {
 	 *         encuentra en la BD
 	 */
 	public boolean login(User usuario) {
-		final String QUERY = "SELECT * FROM users " + "WHERE mail = '" + usuario.getMail() + "' AND "
-				+ "password = '" + usuario.getPassword() + "'";
+		final String QUERY = "SELECT * FROM users " + "WHERE mail = '" + usuario.getMail() + "' AND " + "password = '"
+				+ usuario.getPassword() + "'";
 		try {
 			ResultSet rs = stmt.executeQuery(QUERY);
 			return rs.next();
@@ -61,7 +61,7 @@ public class UserDAO extends AbstractDAO {
 		}
 		return false;
 	}
-	
+
 	public boolean isActivated(User usuario) {
 		final String QUERY = "SELECT * FROM users " + "WHERE mail = '" + usuario.getMail() + "' AND activated = 1";
 		try {
@@ -72,33 +72,35 @@ public class UserDAO extends AbstractDAO {
 		}
 		return false;
 	}
-	
+
 	public void changePassword(User usuario, String inputCode) {
-		final String QUERY = "SELECT * FROM users " + "WHERE mail = '" + usuario.getMail() + "' AND activation_code = '" + inputCode + "'";
-		final String UPDATE = "UPDATE users SET password = '"+usuario.getPassword()+"' WHERE mail = '"
+		final String QUERY = "SELECT * FROM users " + "WHERE mail = '" + usuario.getMail() + "' AND activation_code = '"
+				+ inputCode + "'";
+		final String UPDATE = "UPDATE users SET password = '" + usuario.getPassword() + "' WHERE mail = '"
 				+ usuario.getMail() + "' AND activation_code = '" + inputCode + "'";
 		try {
 			ResultSet rs = stmt.executeQuery(QUERY);
 			if (rs.next()) {
-			stmt.executeUpdate(UPDATE);
+				stmt.executeUpdate(UPDATE);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void setActivationCode(User usuario, String code) {
-		final String UPDATE = "UPDATE users SET activation_code = "+code+" WHERE mail = '"
-				+ usuario.getMail() +"'";
+		final String UPDATE = "UPDATE users SET activation_code = " + code + " WHERE mail = '" + usuario.getMail()
+				+ "'";
 		try {
 			stmt.executeUpdate(UPDATE);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public boolean checkActivationCode(User usuario, String inputCode) {
-		final String QUERY = "SELECT activated FROM users " + "WHERE mail = '" + usuario.getMail() + "'  AND activation_code = '" + inputCode+ "'";
+		final String QUERY = "SELECT activated FROM users " + "WHERE mail = '" + usuario.getMail()
+				+ "'  AND activation_code = '" + inputCode + "'";
 		try {
 			ResultSet rs = stmt.executeQuery(QUERY);
 			return rs.next();
@@ -107,7 +109,7 @@ public class UserDAO extends AbstractDAO {
 		}
 		return false;
 	}
-	
+
 	public String getUsername(User usuario) {
 		final String QUERY = "SELECT username FROM users " + "WHERE mail = '" + usuario.getMail() + "'";
 		try {
@@ -120,10 +122,10 @@ public class UserDAO extends AbstractDAO {
 		}
 		return null;
 	}
-	
+
 	public void activateUser(User usuario, String inputCode) {
-		final String UPDATE = "UPDATE users SET activated = 1 WHERE mail = '"
-				+ usuario.getMail() + "' AND activation_code = '" + inputCode + "'";
+		final String UPDATE = "UPDATE users SET activated = 1 WHERE mail = '" + usuario.getMail()
+				+ "' AND activation_code = '" + inputCode + "'";
 		try {
 			stmt.executeUpdate(UPDATE);
 		} catch (SQLException e) {
@@ -131,6 +133,5 @@ public class UserDAO extends AbstractDAO {
 		}
 
 	}
-	
-	
+
 }

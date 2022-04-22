@@ -8,7 +8,6 @@ import javax.swing.SwingConstants;
 
 import dao.UserDAO;
 import models.User;
-import utils.CredentialsHelper;
 import utils.PasswordHasher;
 
 import javax.swing.JTextField;
@@ -27,7 +26,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class LoginView {
-	
+
 	private JFrame frame;
 	private JTextField tfMail;
 	private JPasswordField pwfPassword;
@@ -41,66 +40,66 @@ public class LoginView {
 	private JLabel lblForgotPwd;
 	private JButton btnLogin;
 	private User usuario;
-	
+
 	public LoginView() {
 		initialize();
 		frame.setVisible(true);
 		this.userDAO = new UserDAO();
 	}
-	
+
 	public void initialize() {
 		frame = new JFrame();
 		configureUIComponents();
 		configureUIListeners();
 	}
-	
+
 	public void configureUIComponents() {
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(Color.BLACK);
 		frame.setBounds(100, 100, 704, 500);
-		
+
 		lblEmail = new JLabel("E-mail");
 		lblEmail.setBounds(244, 236, 78, 13);
 		lblEmail.setForeground(Color.WHITE);
 		lblEmail.setFont(new Font("Dialog", Font.PLAIN, 10));
 		frame.getContentPane().add(lblEmail);
-		
+
 		lblPassword = new JLabel("Password");
 		lblPassword.setBounds(244, 294, 78, 13);
 		lblPassword.setForeground(Color.WHITE);
 		lblPassword.setFont(new Font("Dialog", Font.PLAIN, 10));
 		frame.getContentPane().add(lblPassword);
-		
+
 		tfMail = new JTextField();
 		tfMail.setBounds(244, 252, 207, 38);
 		frame.getContentPane().add(tfMail);
 		tfMail.setColumns(10);
-		
+
 		pwfPassword = new JPasswordField();
 		pwfPassword.setBounds(244, 309, 207, 38);
 		frame.getContentPane().add(pwfPassword);
-		
+
 		lblLogin = new JLabel("Log in");
 		lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
 		lblLogin.setForeground(Color.WHITE);
 		lblLogin.setFont(new Font("Dubai", Font.BOLD, 25));
 		lblLogin.setBounds(244, 198, 207, 38);
 		frame.getContentPane().add(lblLogin);
-		
+
 		lblNewToNetflix = new JLabel("New to Netflix?");
 		lblNewToNetflix.setHorizontalAlignment(SwingConstants.RIGHT);
 		lblNewToNetflix.setForeground(Color.WHITE);
 		lblNewToNetflix.setFont(new Font("Dubai", Font.PLAIN, 14));
 		lblNewToNetflix.setBounds(244, 403, 106, 27);
 		frame.getContentPane().add(lblNewToNetflix);
-		
+
 		lblJoin = new JLabel("Sign up now.");
 		lblJoin.setForeground(new Color(30, 144, 255));
 		lblJoin.setFont(new Font("Dubai", Font.PLAIN, 14));
 		lblJoin.setBounds(356, 403, 95, 27);
 		lblJoin.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		frame.getContentPane().add(lblJoin);
-		
+
 		lblNetflixImg = new JLabel("");
 		lblNetflixImg.setDebugGraphicsOptions(DebugGraphics.BUFFERED_OPTION);
 		lblNetflixImg.setDoubleBuffered(true);
@@ -109,7 +108,7 @@ public class LoginView {
 		lblNetflixImg.setIcon(new ImageIcon(LoginView.class.getResource("/assets/Netflix-Logo.jpg")));
 		lblNetflixImg.setBounds(10, 10, 666, 218);
 		frame.getContentPane().add(lblNetflixImg);
-		
+
 		lblForgotPwd = new JLabel("Forgot your password?");
 		lblForgotPwd.setHorizontalAlignment(SwingConstants.CENTER);
 		lblForgotPwd.setForeground(Color.LIGHT_GRAY);
@@ -117,7 +116,7 @@ public class LoginView {
 		lblForgotPwd.setBounds(244, 426, 207, 27);
 		lblForgotPwd.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		frame.getContentPane().add(lblForgotPwd);
-		
+
 		btnLogin = new JButton("Log in");
 		btnLogin.setBounds(242, 368, 209, 32);
 		btnLogin.setBorder(null);
@@ -126,31 +125,31 @@ public class LoginView {
 		btnLogin.setForeground(Color.WHITE);
 		frame.getContentPane().add(btnLogin);
 	}
-	
+
 	public void configureUIListeners() {
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				login();
 			}
 		});
-		
+
 		lblJoin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			frame.dispose();
-			new RegisterView();
+				frame.dispose();
+				new RegisterView();
 			}
 		});
-		
+
 		lblForgotPwd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-			frame.dispose();
-			new ForgotPassword();
+				frame.dispose();
+				new ForgotPassword();
 			}
 		});
 	}
-	
+
 	/**
 	 * M�todo que obtiene el texto del campo de texto del mail de usuario y la
 	 * contrase�a y comprueba que se encuentra en la BD o no.
@@ -165,14 +164,14 @@ public class LoginView {
 		/*
 		 * Si en UsuarioDAO obtenemos un registro con los datos del usuario, loggedIn es
 		 * true y por tanto, desaparece la ventana de login y se crea una nueva del
-		 * buscador de shows de Netflix. Si no, lanza un mensaje que informa que el nombre de usuario o
-		 * contrase�a son inv�lidos.
+		 * buscador de shows de Netflix. Si no, lanza un mensaje que informa que el
+		 * nombre de usuario o contrase�a son inv�lidos.
 		 */
 		if (loggedIn && userDAO.isActivated(usuario)) {
 			JOptionPane.showMessageDialog(btnLogin, "Login successful!");
 			new SearchView(userDAO.getUsername(usuario));
 			frame.dispose();
-		} else if (loggedIn && !userDAO.isActivated(usuario)){
+		} else if (loggedIn && !userDAO.isActivated(usuario)) {
 			JOptionPane.showMessageDialog(btnLogin, "User activation pending. Please activate your account.");
 			new UserActivationView();
 			frame.dispose();

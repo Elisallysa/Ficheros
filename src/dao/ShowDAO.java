@@ -5,7 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import models.Show;
-import models.User;
 
 public class ShowDAO extends AbstractDAO {
 
@@ -15,17 +14,16 @@ public class ShowDAO extends AbstractDAO {
 	 */
 	public void insert(Show show) {
 		final String INSERT = "INSERT INTO shows VALUES ('" + show.getShow_id() + "', '" + show.getType() + "', '"
-				+ show.getTitle() + "', '" + show.getDirector() + "', '" + show.getCast() + "', '"
-				+ show.getCountry() + "', '" + show.getDate_added() + "', '" + show.getRelease_year() + "', '"
-				+ show.getRating() + "', '" + show.getDuration() + "', '" + show.getListed_in() + "', '"
-				+ show.getDescription() + "')";
+				+ show.getTitle() + "', '" + show.getDirector() + "', '" + show.getCast() + "', '" + show.getCountry()
+				+ "', '" + show.getDate_added() + "', '" + show.getRelease_year() + "', '" + show.getRating() + "', '"
+				+ show.getDuration() + "', '" + show.getListed_in() + "', '" + show.getDescription() + "')";
 		try {
 			stmt.executeUpdate(INSERT);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return
@@ -48,7 +46,8 @@ public class ShowDAO extends AbstractDAO {
 				var duracion = rs.getString("duration");
 				var generos = rs.getString("listed_in");
 				var sinopsis = rs.getString("description");
-				Show s = new Show(id, tipo, titulo, direc, reparto, pais, fecha, estreno, categoria, duracion, generos, sinopsis);
+				Show s = new Show(id, tipo, titulo, direc, reparto, pais, fecha, estreno, categoria, duracion, generos,
+						sinopsis);
 				shows.add(s);
 			}
 		} catch (SQLException e) {
@@ -56,7 +55,7 @@ public class ShowDAO extends AbstractDAO {
 		}
 		return shows;
 	}
-	
+
 	/**
 	 * 
 	 * @param searchFilter
@@ -64,9 +63,9 @@ public class ShowDAO extends AbstractDAO {
 	 * @return
 	 */
 	public ArrayList<Show> search(int searchFilter, String busqueda) {
-	
+
 		String campo = "";
-		
+
 		switch (searchFilter) {
 		case 0:
 			campo = "title";
@@ -83,8 +82,8 @@ public class ShowDAO extends AbstractDAO {
 		default:
 			break;
 		}
-		
-		final String QUERY = "SELECT * FROM shows WHERE "+campo+" like '%"+busqueda+"%'";
+
+		final String QUERY = "SELECT * FROM shows WHERE " + campo + " like '%" + busqueda + "%'";
 		var shows = new ArrayList<Show>();
 		try {
 			ResultSet rs = stmt.executeQuery(QUERY);
@@ -101,7 +100,8 @@ public class ShowDAO extends AbstractDAO {
 				var duracion = rs.getString("duration");
 				var generos = rs.getString("listed_in");
 				var sinopsis = rs.getString("description");
-				Show s = new Show(id, tipo, titulo, direc, reparto, pais, fecha, estreno, categoria, duracion, generos, sinopsis);
+				Show s = new Show(id, tipo, titulo, direc, reparto, pais, fecha, estreno, categoria, duracion, generos,
+						sinopsis);
 				shows.add(s);
 			}
 		} catch (SQLException e) {
@@ -109,7 +109,7 @@ public class ShowDAO extends AbstractDAO {
 		}
 		return shows;
 	}
-	
+
 	public boolean isStored(Show show) {
 		final String QUERY = "SELECT * FROM shows " + "WHERE show_id = '" + show.getShow_id() + "'";
 		try {
@@ -120,6 +120,5 @@ public class ShowDAO extends AbstractDAO {
 		}
 		return false;
 	}
-	
-	
+
 }
