@@ -4,8 +4,23 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * La clase PasswordHasher contiene un método con el que se cifran contraseñas.
+ * 
+ * @author elisa
+ *
+ */
 public class PasswordHasher {
 
+	/**
+	 * Método que cifra una cadena de caracteres que corresponde a una contraseña.
+	 * 
+	 * @param passwordToHash - Cadena de caracteres que corresponde a la contraseña
+	 *                       que se desea cifrar
+	 * @param salt           - Cadena de caracteres aleatoria que se añade a las
+	 *                       contraseñas para cifrarlas
+	 * @return Cadena de caracteres de la contraseña cifrada.
+	 */
 	public static String hashIt(String passwordToHash, String salt) {
 		String generatedPassword = null;
 		try {

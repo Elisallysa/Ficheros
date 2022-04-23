@@ -6,11 +6,19 @@ import java.util.ArrayList;
 
 import models.Show;
 
+/**
+ * Clase que hereda de la clase abstracta AbstractDAO en la que se implementan
+ * los métodos para interactuar con la tabla shows de la BD Netflix.
+ * 
+ * @author elisa
+ *
+ */
 public class ShowDAO extends AbstractDAO {
 
 	/**
+	 * Método que inserta un show nuevo en la BD.
 	 * 
-	 * @param show
+	 * @param show - Película o serie que se quiere almacenar en la BD.
 	 */
 	public void insert(Show show) {
 		final String INSERT = "INSERT INTO shows VALUES ('" + show.getShow_id() + "', '" + show.getType() + "', '"
@@ -25,8 +33,10 @@ public class ShowDAO extends AbstractDAO {
 	}
 
 	/**
+	 * Método que almacena objetos de la clase Show obtenidos de la BD en un
+	 * ArrayList.
 	 * 
-	 * @return
+	 * @return - ArrayList de Show que se encuentran en la BD.
 	 */
 	public ArrayList<Show> getAll() {
 		final String QUERY = "SELECT * FROM shows";
@@ -57,10 +67,14 @@ public class ShowDAO extends AbstractDAO {
 	}
 
 	/**
+	 * Método que almacena objetos de la clase Show que contienen la información
+	 * introducida con un filtro de búsqueda en un ArrayList.
 	 * 
-	 * @param searchFilter
-	 * @param busqueda
-	 * @return
+	 * @param searchFilter - Tipo de dato del filtro de búsqueda.
+	 * @param busqueda     - texto que debe contener el tipo de información
+	 *                     seleccionado.
+	 * @return - ArrayList de Show con las películas y series que contienen el texto
+	 *         introducido en el tipo de dato seleccionado.
 	 */
 	public ArrayList<Show> search(int searchFilter, String busqueda) {
 
@@ -110,6 +124,14 @@ public class ShowDAO extends AbstractDAO {
 		return shows;
 	}
 
+	/**
+	 * Método que comprueba si una película o serie está almacenada en la BD.
+	 * 
+	 * @param show - Objeto de la clase Show que corresponde a la película o serie
+	 *             que se quiere comprobar.
+	 * @return - true: la película o serie se encuentra en la BD; false: no se
+	 *         encuentra en la BD.
+	 */
 	public boolean isStored(Show show) {
 		final String QUERY = "SELECT * FROM shows " + "WHERE show_id = '" + show.getShow_id() + "'";
 		try {

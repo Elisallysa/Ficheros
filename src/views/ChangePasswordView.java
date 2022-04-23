@@ -20,30 +20,37 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Clase de la vista en la que el usuario puede cambiar su contraseña.
+ * 
+ * @author elisa
+ *
+ */
 public class ChangePasswordView {
 
+	// COMPONENTES DE LA VISTA
 	private JFrame frame;
 	private JPasswordField pwfConfirmPassword;
 	private JPasswordField pwfPassword;
 	private JTextField tfEmail;
+	private JTextField tfCode;
 	private JPanel jpCentral;
+	private JPanel panel;
 	private JLabel lblSignUp;
 	private JLabel lblEmail;
 	private JLabel lblPassword;
 	private JLabel lblConfirmPassword;
-	private JButton btnChangePwd;
-	private JButton btnBackToForgotMyPassword;
-	private JLabel lblBackground;
-	private UserDAO userDAO;
-	private JPanel panel;
 	private JLabel lbl_fondoSeries;
 	private JLabel lblActivationCode;
-	private JTextField tfCode;
+	private JLabel lblBackground;
+	private JButton btnChangePwd;
+	private JButton btnBackToForgotMyPassword;
+	private UserDAO userDAO;
 	private User user;
 
 	/**
-	 * Creaci�n de la aplicaci�n. Se inicializa, se hace visible el marco y se
-	 * reserva memoria para el usuario DAO.
+	 * Creación de la vista. Se inicializa, se hace visible el marco y se reserva
+	 * memoria para el usuario DAO.
 	 */
 	public ChangePasswordView() {
 		initialize();
@@ -52,7 +59,8 @@ public class ChangePasswordView {
 	}
 
 	/**
-	 * Se inicializan los contenidos del marco.
+	 * Método que inicializa los contenidos del marco. Y se llaman los métodos que
+	 * configuran componentes y listeners.
 	 */
 	private void initialize() {
 		frame = new JFrame();
@@ -61,7 +69,7 @@ public class ChangePasswordView {
 	}
 
 	/**
-	 * M�todo que configura los componentes de la interfaz gr�fica.
+	 * Método que configura los componentes de la vista.
 	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setLayout(null);
@@ -160,7 +168,12 @@ public class ChangePasswordView {
 
 	}
 
+	/**
+	 * Método que configura los listeners de la vista.
+	 */
 	public void configureUIListeners() {
+
+		// Botón para volver a la vista anterior.
 		btnBackToForgotMyPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ForgotPassword();
@@ -168,6 +181,7 @@ public class ChangePasswordView {
 			}
 		});
 
+		// Botón para cambiar la contraseña con los datos introducidos.
 		btnChangePwd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String mail = tfEmail.getText();
@@ -175,19 +189,14 @@ public class ChangePasswordView {
 				String confirmedPassword = new String(pwfConfirmPassword.getPassword());
 				String code = tfCode.getText();
 
-				if (!mail.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty() && !code.isEmpty()) { // Todos
-																													// los
-																													// campos
-																													// deben
-																													// tener
-																													// texto
+				// Todos los campos deben tener texto:
+				if (!mail.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty() && !code.isEmpty()) {
+
 					user = new User(0, null, mail, PasswordHasher.hashIt(new String(password), "123456789"));
 
-					if (userDAO.isUser(user)) {
-						if (password.equals(confirmedPassword)) { // Si la contrase�a es igual a la contrase�a
-																	// confirmada se
-																	// registra el usuario
-							userDAO.changePassword(user, code);
+					if (userDAO.isUser(user)) { // Si existe el usuario
+						if (password.equals(confirmedPassword)) { // y las contraseñas coinciden
+							userDAO.changePassword(user, code); // se cambia la contraseña en la BD
 							JOptionPane.showMessageDialog(btnChangePwd, "Password changed successfully.");
 							new UserActivationView();
 							frame.dispose();

@@ -23,32 +23,35 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-@SuppressWarnings("serial")
-public class ForgotPassword extends JFrame {
+/**
+ * Clase de la vista de la GUI en la que el usuario puede solicitar un código
+ * para cambiar su contraseña.
+ * 
+ * @author elisa
+ *
+ */
+public class ForgotPassword {
 
+	// COMPONENTES DE LA VISTA
 	private JFrame frame;
 	private JTextField tfEmail;
 	private JPanel jpCentral;
+	private JPanel panel;
 	private JLabel lblForgotPassword;
 	private JLabel lblEmail;
-	private JButton btnReceiveCode;
-	private JButton btnBackToLogin;
 	private JLabel lblBackground;
-	private UserDAO userDAO;
-	private User user;
-	private JPanel panel;
 	private JLabel lbl_fondoSeries;
 	private JLabel lblGoToChangePwd;
-	private JButton btnChangePassword;
 	private JLabel lblDidntGetCode;
-
-	public static void main(String[] args) {
-		new ForgotPassword();
-	}
+	private JButton btnReceiveCode;
+	private JButton btnBackToLogin;
+	private JButton btnChangePassword;
+	private UserDAO userDAO;
+	private User user;
 
 	/**
-	 * Creaci�n de la aplicaci�n. Se inicializa, se hace visible el marco y se
-	 * reserva memoria para el usuario DAO.
+	 * Creación de la vista. Se inicializa, se hace visible el marco y se reserva
+	 * memoria para el usuario DAO.
 	 */
 	public ForgotPassword() {
 		initialize();
@@ -57,7 +60,8 @@ public class ForgotPassword extends JFrame {
 	}
 
 	/**
-	 * Se inicializan los contenidos del marco.
+	 * Método que inicializa los contenidos del marco y se llaman los métodos de
+	 * configuración de componentes y listeners.
 	 */
 	private void initialize() {
 		frame = new JFrame();
@@ -66,7 +70,7 @@ public class ForgotPassword extends JFrame {
 	}
 
 	/**
-	 * M�todo que configura los componentes de la interfaz gr�fica.
+	 * Método que configura los componentes de la vista.
 	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -146,7 +150,7 @@ public class ForgotPassword extends JFrame {
 
 		panel = new JPanel();
 		panel.setBounds(0, 0, 633, 353);
-		getContentPane().add(panel);
+		frame.getContentPane().add(panel);
 		panel.setLayout(null);
 
 		lbl_fondoSeries = new JLabel("Fondo de series");
@@ -156,7 +160,12 @@ public class ForgotPassword extends JFrame {
 
 	}
 
+	/**
+	 * Método que configura los listeners de la vista.
+	 */
 	public void configureUIListeners() {
+
+		// Botón que vuelve a la vista anterior.
 		btnBackToLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();
@@ -164,16 +173,18 @@ public class ForgotPassword extends JFrame {
 			}
 		});
 
+		// Botón que envía un código de activación al mail del usuario si los datos son
+		// correctos.
 		btnReceiveCode.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				user = new User(0, tfEmail.getText(), null);
 
-				if (userDAO.isUser(user)) {
-					if (userDAO.isActivated(user)) {
-						EmailHelper.SendForgotPassword(tfEmail.getText());
+				if (userDAO.isUser(user)) { // Si existe el usuario en la BD
+					if (userDAO.isActivated(user)) { // y su cuenta está activada
+						EmailHelper.SendForgotPassword(tfEmail.getText()); // recibe el código en su mail
 						JOptionPane.showMessageDialog(btnReceiveCode, "You got your activation code in your mailbox");
-					} else {
+					} else { // Si la cuenta del usuario no está activada lo obliga a activarla
 						JOptionPane.showMessageDialog(btnReceiveCode,
 								"This user is not yet activated. Before reseting your password, please activate your account with the 6-digit code we sent you to your personal E-Mail at the moment of registering.");
 						new UserActivationView();
@@ -193,6 +204,7 @@ public class ForgotPassword extends JFrame {
 			}
 		});
 
+		// Cambia a la vista donde se puede cambiar la contraseña.
 		btnChangePassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new ChangePasswordView();

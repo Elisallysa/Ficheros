@@ -14,20 +14,63 @@ import java.util.Scanner;
 
 import models.Show;
 
+/**
+ * La clase FavShowsReaderAndWriter contiene los métodos con los que se escriben
+ * y leen archivos .csv que contienen información de películas y series.
+ * 
+ * @author elisa
+ *
+ */
 public class FavShowsReaderAndWriter {
 
+	/**
+	 * Añade uno o más shows a un archivo .csv.
+	 * 
+	 * @param favList   - ArrayList de objetos Show.
+	 * @param username  - Cadena de caracteres con un nombre de usuario.
+	 * @param fileName  - Cadena de caracteres con el nombre del archivo donde se
+	 *                  quieren almacenar los shows.
+	 * @param separator - Cadena de caracteres con el separador que se usará para
+	 *                  separar la información de los shows en el archivo .csv.
+	 */
 	public void addFavShow(ArrayList<Show> favList, String username, String fileName, String separator) {
 		try {
 
-			Boolean newFile = new File("src/assets/userFiles/" + username + "_" + fileName + ".csv").exists();
+			Boolean fileExists = new File("src/assets/userFiles/" + username + "_" + fileName + ".csv").exists(); // Comprueba
+																													// si
+																													// existe
+																													// un
+																													// archivo
+																													// de
+																													// un
+																													// usuario
+																													// y
+																													// con
+																													// un
+																													// nombre
+																													// concreto.
 
-			FileWriter fw = new FileWriter("src/assets/userFiles/" + username + "_" + fileName + ".csv", true);
+			FileWriter fw = new FileWriter("src/assets/userFiles/" + username + "_" + fileName + ".csv", true); // Construye
+																												// un
+																												// FileWriter
+																												// para
+																												// el
+																												// archivo
+																												// con
+																												// la
+																												// codificación
+																												// de
+																												// caracteres
+																												// por
+																												// defecto.
 
-			if (!newFile) {
+			if (!fileExists) { // Si el archivo no existe
 				if (!separator.isBlank()) {
-					fw.write("SEPARATOR:" + separator + "\n");
-				} else {
-					fw.write("SEPARADOR:TABULATOR\n");
+					fw.write("SEPARATOR:" + separator + "\n"); // En la primera línea escribimos qué separador se ha
+																// seleccionado
+				} else { // Si el separador no tiene contenido (isBlank) significa que se seleccionó el
+							// tabulador
+					fw.write("SEPARADOR:TABULATOR\n"); // Lo escribimos con texto para poder leerlo más tarde
 				}
 
 			}
@@ -37,14 +80,11 @@ public class FavShowsReaderAndWriter {
 					StandardCharsets.UTF_8);
 
 			for (Show s : favList) {
-				if (!lineas.toString().contains(s.getShow_id())) {
+				if (!lineas.toString().contains(s.getShow_id())) { // Comprueba que el archivo no contenga el show que
+																	// se quiere añadir.
 					fw.write(s.toCSVString(separator) + "\n");
 				}
 			}
-
-//		    if (separator.isBlank()) {
-//		    	lineas.toString().replace("/t", "\t");
-//		    }
 
 			fw.flush();
 			fw.close();
@@ -53,6 +93,16 @@ public class FavShowsReaderAndWriter {
 		}
 	}
 
+	/**
+	 * Método que obtiene el separador de un archivo de favoritos .csv que ya
+	 * existe.
+	 * 
+	 * @param username - Cadena de caracteres con el nombre de usuario activo.
+	 * @param fileName - Nombre del archivo del que se quiere obtener el separador
+	 *                 de información.
+	 * @return Cadena de caracteres que corresponde al separador usado en el
+	 *         archivo.
+	 */
 	public String getSeparator(String username, String fileName) {
 		try {
 			File f = new File("src/assets/userFiles/" + username + "_" + fileName + ".csv");
@@ -75,6 +125,15 @@ public class FavShowsReaderAndWriter {
 		return null;
 	}
 
+	/**
+	 * Método con el que se lee un archivo .csv de favoritos para almacenarlos en un
+	 * array de String.
+	 * 
+	 * @param username - Cadena de caracteres del nombre de usuario activo.
+	 * @param fileName - Nombre del archivo del que se quiere obtener los shows.
+	 * @return - Array de String que contendrá los shows almacenados en el archivo
+	 *         .csv
+	 */
 	public String[] getFavList(String username, String fileName) {
 		try {
 			List<String> favList = new ArrayList<String>();

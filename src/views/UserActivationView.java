@@ -24,27 +24,34 @@ import javax.swing.SwingConstants;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Clase de la vista de activación de usuario.
+ * 
+ * @author elisa
+ *
+ */
 public class UserActivationView {
 
+	// COMPONENTES DE LA VISTA
 	private JFrame frame;
 	private JTextField tfEmail;
 	private JPanel jpCentral;
+	private JPanel panel;
 	private JLabel lblUserActivation;
 	private JLabel lblEmail;
-	private JButton btnActivate;
-	private JButton btnBackToLogin;
-	private JLabel lblBackground;
-	private UserDAO userDAO;
-	private JPanel panel;
 	private JLabel lbl_fondoSeries;
 	private JLabel lblActivationCode;
-	private JTextField tfActivationCode;
 	private JLabel lblDontHaveCode;
 	private JLabel lblSendAgain;
+	private JLabel lblBackground;
+	private JButton btnActivate;
+	private JButton btnBackToLogin;
+	private UserDAO userDAO;
+	private JTextField tfActivationCode;
 	private User user;
 
 	/**
-	 * Creaci�n de la aplicaci�n. Se inicializa, se hace visible el marco y se
+	 * Creación de la aplicación. Se inicializa, se hace visible el marco y se
 	 * reserva memoria para el usuario DAO.
 	 */
 	public UserActivationView() {
@@ -54,7 +61,8 @@ public class UserActivationView {
 	}
 
 	/**
-	 * Se inicializan los contenidos del marco.
+	 * Se inicializan los contenidos del marco y se llama a los métodos que
+	 * configuran componentes y listeners.
 	 */
 	private void initialize() {
 		frame = new JFrame();
@@ -63,7 +71,7 @@ public class UserActivationView {
 	}
 
 	/**
-	 * M�todo que configura los componentes de la interfaz gr�fica.
+	 * Método que configura los componentes de la vista.
 	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setLayout(null);
@@ -157,14 +165,21 @@ public class UserActivationView {
 
 	}
 
+	/**
+	 * Método que configura los listeners de la vista.
+	 */
 	public void configureUIListeners() {
-
+		// Botón que activa la cuenta de usuario
 		btnActivate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
+				// Ningún campo debe estar vacío:
 				if (!tfEmail.getText().isEmpty() || !tfActivationCode.getText().isEmpty()) {
 					User user = new User(0, tfEmail.getText(), null);
-					if (userDAO.checkActivationCode(user, tfActivationCode.getText())) {
+					if (userDAO.checkActivationCode(user, tfActivationCode.getText())) { // Se activa la cuenta si el
+																							// código de activación
+																							// coincide con el
+																							// almacenado en la BD
 						userDAO.activateUser(user, tfActivationCode.getText());
 						JOptionPane.showMessageDialog(btnActivate, "User activated successfully");
 					} else {
@@ -178,6 +193,8 @@ public class UserActivationView {
 			}
 		});
 
+		// Botón con el que se confirma si el usuario necesita recibir otro código de
+		// activación
 		lblSendAgain.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -185,10 +202,10 @@ public class UserActivationView {
 				int option = JOptionPane.showConfirmDialog(frame, "Would you like to get another code?", "Resend code",
 						JOptionPane.YES_NO_OPTION);
 				if (option == JOptionPane.YES_OPTION) {
-					if (!tfEmail.getText().isEmpty()) {
+					if (!tfEmail.getText().isEmpty()) { // Se envía un nuevo código si se ha introducido un mail...
 						user = new User(0, tfEmail.getText(), null);
 
-						if (userDAO.isUser(user)) {
+						if (userDAO.isUser(user)) { // ...y el usuario está registrado
 							String newCode = ActivationCodeHelper.generateActivationCode();
 							ActivationCodeHelper.setActivationCode(user, newCode);
 							EmailHelper.SendNewActivationCode(user.getMail(), newCode);
@@ -207,6 +224,7 @@ public class UserActivationView {
 			}
 		});
 
+		// Botón que regresa a la vista anterior de la GUI
 		btnBackToLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				new LoginView();

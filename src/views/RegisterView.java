@@ -21,13 +21,20 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Insets;
 
+/**
+ * Clase de la vista de registro de usuario.
+ * 
+ * @author elisa
+ *
+ */
 public class RegisterView {
 
+	// COMPONENTES DE LA VISTA
 	private JFrame frame;
 	private JTextField tfUsername;
+	private JTextField tfEmail;
 	private JPasswordField pwfConfirmPassword;
 	private JPasswordField pwfPassword;
-	private JTextField tfEmail;
 	private JPanel jpCentral;
 	private JLabel lblSignUp;
 	private JLabel lblUsername;
@@ -41,7 +48,7 @@ public class RegisterView {
 	private User user;
 
 	/**
-	 * Creaci�n de la aplicaci�n. Se inicializa, se hace visible el marco y se
+	 * Creación de la aplicaci�n. Se inicializa, se hace visible el marco y se
 	 * reserva memoria para el usuario DAO.
 	 */
 	public RegisterView() {
@@ -51,7 +58,8 @@ public class RegisterView {
 	}
 
 	/**
-	 * Se inicializan los contenidos del marco.
+	 * Se inicializan los contenidos del marco y se llama a los métodos que
+	 * configuran componentes y listeners.
 	 */
 	private void initialize() {
 		frame = new JFrame();
@@ -60,7 +68,7 @@ public class RegisterView {
 	}
 
 	/**
-	 * M�todo que configura los componentes de la interfaz gr�fica.
+	 * Método que configura los componentes de la vista.
 	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setLayout(null);
@@ -149,7 +157,11 @@ public class RegisterView {
 
 	}
 
+	/**
+	 * Método que configura los listeners de la vista.
+	 */
 	public void configureUIListeners() {
+		// Botón para crear una cuenta nueva
 		btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -158,17 +170,13 @@ public class RegisterView {
 				String password = new String(pwfPassword.getPassword());
 				String confirmedPassword = new String(pwfConfirmPassword.getPassword());
 
-				if (!username.isEmpty() && !mail.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) { // Todos
-																														// los
-																														// campos
+				// Todos los campos deben tener texto:
+				if (!username.isEmpty() && !mail.isEmpty() && !password.isEmpty() && !confirmedPassword.isEmpty()) {
 					user = new User(0, username, mail,
-							PasswordHasher.hashIt(new String(pwfPassword.getPassword()), "123456789")); // deben tener
-																										// texto
+							PasswordHasher.hashIt(new String(pwfPassword.getPassword()), "123456789"));
 
-					if (!userDAO.isUser(user)) {
-						if (password.equals(confirmedPassword)) { // Si la contrase�a es igual a la contrase�a
-																	// confirmada se
-																	// registra el usuario
+					if (!userDAO.isUser(user)) { // Comprueba que el usuario no se ha registrado antes
+						if (password.equals(confirmedPassword)) { // Las contraseñas deben coincidir
 
 							userDAO.register(user);
 							String actCode = ActivationCodeHelper.generateActivationCode();
@@ -187,11 +195,12 @@ public class RegisterView {
 
 				} else {
 					JOptionPane.showMessageDialog(btnCreateAccount,
-							"Completion of all information is required to register.");
+							"Completion of all the information is required to register.");
 				}
 			}
 		});
 
+		// Botón que regresa a la vista anterior de la GUI.
 		btnBackToLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.dispose();

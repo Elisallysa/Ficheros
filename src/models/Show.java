@@ -1,20 +1,27 @@
 package models;
 
+/**
+ * La clase Show representa películas y series que contienen información
+ * relevante de las mismas.
+ * 
+ * @author elisa
+ *
+ */
 public class Show {
 
 	// ATRIBUTOS
-	private String show_id;
-	private String type;
-	private String title;
-	private String director;
-	private String cast;
-	private String country;
-	private String date_added;
-	private String release_year;
-	private String rating;
-	private String duration;
-	private String listed_in;
-	private String description;
+	private String show_id; // Número identificativo único
+	private String type; // Tipo de show
+	private String title; // Título
+	private String director; // Director
+	private String cast; // Reparto
+	private String country; // País al que pertenece
+	private String date_added; // Año en el que se añadió a la plataforma
+	private String release_year; // Año de estreno
+	private String rating; // Restricciones de visualización
+	private String duration; // Duración
+	private String listed_in; // Categorías
+	private String description; // Sinopsis
 
 	// CONSTRUCTOR
 	public Show(String show_id, String type, String title, String director, String cast, String country,

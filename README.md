@@ -24,3 +24,4 @@ Ejercicio de clase de programación que tiene como objetivo crear una aplicació
 - Implementación de un scrollbar en el JList donde se visualizan las películas y series. No se puede ver la información completa.
 - En la creación de archivos de favoritos, si se cancela el proceso en el cuadro de diálogo donde se elige el separador de la información, salta una excepción que no se ha controlado.
 - Hacer que el username, como la dirección de E-Mail, sea único en la BD, para que a la hora de crear documentos, el usuario no pueda acceder a los archivos de otro usuario que tiene el mismo nombre.
+- Conseguir que en un archivo de favoritos con tabulador como separador se pueda visualizar en la vista de búsqueda (si se abre con otro editor de texto sí aparece la tabulación correctamente)

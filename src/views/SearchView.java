@@ -27,17 +27,24 @@ import java.awt.event.MouseEvent;
 import javax.swing.ImageIcon;
 import java.awt.event.MouseAdapter;
 
+/**
+ * Clase de la vista del motor de búsqueda de series y películas de la GUI.
+ * 
+ * @author elisa
+ *
+ */
 public class SearchView {
 
+	// COMPONENTES DE LA VISTA
 	private JFrame frame;
-	private JList<String> jlShowList;
 	private JLabel lblSearchEngine;
 	private JLabel lblMyFavs;
 	private JTextField tfSearchBox;
-	private JComboBox<String> cbFilter;
 	private JButton btnSearch;
 	private JButton btnAddToFavourites;
 	private ShowDAO showDAO;
+	private JList<String> jlShowList;
+	private JComboBox<String> cbFilter;
 	private ArrayList<Show> showsList;
 	private ArrayList<Show> selectedShows;
 	private ListModel<String> defaultStringListModel;
@@ -45,7 +52,10 @@ public class SearchView {
 	private String activeUser;
 
 	/**
-	 * Create the application.
+	 * Creación de la vista. Se inicializa, se hace visible el marco y se reserva
+	 * memoria para el usuario DAO, un FavShowsReaderAndWriter para leer los
+	 * archivos .csv, dos ArrayList de Show y el nombre de usuario del usuario
+	 * activo.
 	 */
 	public SearchView(String username) {
 		this.fsw = new FavShowsReaderAndWriter();
@@ -58,7 +68,8 @@ public class SearchView {
 	}
 
 	/**
-	 * Initialize the contents of the frame.
+	 * Método que inicializa los contenidos del marco y llama a los métodos que
+	 * configuran los componentes y listeners de la vista.
 	 */
 	public void initialize() {
 		frame = new JFrame();
@@ -66,6 +77,9 @@ public class SearchView {
 		configureUIListeners();
 	}
 
+	/**
+	 * Método que configura los componentes de la vista.
+	 */
 	public void configureUIComponents() {
 		frame.setBounds(100, 100, 817, 470);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -122,7 +136,11 @@ public class SearchView {
 		btnAddToFavourites.setVisible(false);
 	}
 
+	/**
+	 * Método que configura los listeners de la vista.
+	 */
 	public void configureUIListeners() {
+		// Botón que ejecuta la búsqueda de los shows.
 		btnSearch.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -139,6 +157,7 @@ public class SearchView {
 			}
 		});
 
+		// Botón que añade a un archivo los shows seleccionados.
 		btnAddToFavourites.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String fileName = JOptionPane.showInputDialog("Type file's name:");
@@ -161,6 +180,8 @@ public class SearchView {
 			}
 		});
 
+		// Label que pide al usuario elegir el archivo .csv de favoritos que desea
+		// visualizar.
 		lblMyFavs.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -176,6 +197,9 @@ public class SearchView {
 		});
 	}
 
+	/**
+	 * Método que actualiza la lista de shows que se visualizan en la vista.
+	 */
 	public void updateJList() {
 		this.showsList.clear();
 		defaultStringListModel = new DefaultListModel<String>();
@@ -187,6 +211,12 @@ public class SearchView {
 
 	}
 
+	/**
+	 * Método que actualiza la lista de shows que se visualizan en la vista con
+	 * shows almacenados en un archivo de favoritos del usuario.
+	 * 
+	 * @param filename
+	 */
 	public void updateJListWithFavs(String filename) {
 
 		defaultStringListModel = new DefaultListModel<String>();
@@ -197,29 +227,36 @@ public class SearchView {
 		jlShowList.setSelectedIndex(-1);
 	}
 
+	/**
+	 * Método que ejecuta la búsqueda de shows con unos filtros de búsqueda
+	 * determinados.
+	 * 
+	 * @return - ArrayList de Show que son compatibles con los filtros de búsqueda
+	 *         introducidos.
+	 */
 	public ArrayList<Show> getSearchList() {
 		this.showsList = showDAO.search(cbFilter.getSelectedIndex(), tfSearchBox.getText());
 		return this.showsList;
 	}
 
-	public ArrayList<Show> getFavList() {
-		this.showsList = showDAO.search(cbFilter.getSelectedIndex(), tfSearchBox.getText());
-		return this.showsList;
-	}
-
+	/**
+	 * Método que recoge el separador y nombre de archivo de favoritos que se desea
+	 * crear.
+	 * 
+	 * @param separador - Cadena de caracteres que corresponde al separador de datos
+	 *                  usado en el archivo que se desea crear.
+	 * @param fileName  - Cadena de caracteres que corresponde al nombre del archivo
+	 *                  que se desea crear.
+	 */
 	public void addFavourites(String separador, String fileName) {
 
 		int[] totalIndices = jlShowList.getSelectedIndices();
 
 		for (int i = 0; i < totalIndices.length; i++) {
 
-			this.selectedShows.add(this.showsList.get(this.showsList.size() - 1 - totalIndices[i])); // The list is
-																										// displayed
-																										// upside down,
-																										// that is why
-																										// the inverted
-																										// index value
-																										// is selected
+			// The list is displayed upside down, that is why the inverted index value is
+			// selected:
+			this.selectedShows.add(this.showsList.get(this.showsList.size() - 1 - totalIndices[i]));
 
 			fsw.addFavShow(this.selectedShows, activeUser, fileName, separador);
 
@@ -227,10 +264,29 @@ public class SearchView {
 		this.selectedShows.clear();
 	}
 
+	/**
+	 * Comprueba si el archivo ya existe.
+	 * 
+	 * @param usuarioActivo - Cadena de caracteres que corresponde al nombre de
+	 *                      usuario del usuario activo.
+	 * @param filename      - Cadena de caracteres que corresponde al nombre con el
+	 *                      que se guardó el archivo.
+	 * @return true: el archivo existe, false: el archivo no existe.
+	 */
 	public boolean fileExists(String usuarioActivo, String filename) {
 		return new File("src/assets/userFiles/" + usuarioActivo + "_" + filename + ".csv").exists();
 	}
 
+	/**
+	 * Obtiene el separador de datos usado en un archivo de favoritos.
+	 * 
+	 * @param username - Cadena de caracteres que corresponde al nombre de usuario
+	 *                 del usuario activo.
+	 * @param filename - Cadena de caracteres que corresponde al nombre con el que
+	 *                 se guardó el archivo.
+	 * @return - Cadena de caracteres con el separador usado en el archivo de
+	 *         favoritos.
+	 */
 	public String getDataSeparator(String username, String filename) {
 		return fsw.getSeparator(username, filename);
 	}

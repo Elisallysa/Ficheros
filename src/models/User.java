@@ -1,24 +1,35 @@
 package models;
 
+/**
+ * La clase User representa un usuario que contiene información relevante del
+ * mismo.
+ * 
+ * @author elisa
+ *
+ */
 public class User {
 	// ATRIBUTOS
-	// N�mero entero identificativo �nico del usuario
-	private int iduser;
-	// Cadena de caracteres con el nombre de usuario
-	private String username;
-	private String mail;
-	// Cadena de caracteres con la contrase�a del usuario
-	private String password;
-	private String activationCode;
-	private boolean activated;
+	private int iduser; // Número entero identificativo único del usuario
+	private String username; // Cadena de caracteres con el nombre de usuario
+	private String mail; // Dirección de mail del usuario
+	private String password;// Cadena de caracteres con la contraseña del usuario
+	private String activationCode; // Cadena de caracteres con un código de activación
+	private boolean activated; // Booleano que indica si el usuario ha activado su cuenta o no
 
-	// CONSTRUCTOR
+	// CONSTRUCTORES
+
 	/**
-	 * Constructor de User
+	 * Constructor de User con todos los atributos.
 	 * 
-	 * @param iduser   - n�mero identificativo �nico
-	 * @param username - nombre de usuario
-	 * @param password - contrase�a
+	 * @param iduser         - Número entero identificativo del usuario
+	 * @param username       - Cadena de caracteres con el nombre de usuario
+	 * @param mail           - Cadena de caracteres con la dirección de E-Mail del
+	 *                       usuario
+	 * @param password       - Cadena de caracteres con la contraseña del usuario
+	 * @param activationCode - Cadena de caracteres con el código de activación del
+	 *                       usuario
+	 * @param activated      - Booleano que indica si la cuenta se encuentra activa
+	 *                       o no
 	 */
 	public User(int iduser, String username, String mail, String password, String activationCode, boolean activated) {
 		super();
@@ -30,6 +41,13 @@ public class User {
 		this.setActivated(false);
 	}
 
+	/**
+	 * Constructor de User con id, mail y contraseña.
+	 * 
+	 * @param iduser   - Número entero identificativo del usuario
+	 * @param mail     - Cadena de caracteres con la dirección de E-Mail del usuario
+	 * @param password - Cadena de caracteres con la contraseña del usuario
+	 */
 	public User(int iduser, String mail, String password) {
 		super();
 		this.iduser = iduser;
@@ -37,6 +55,14 @@ public class User {
 		this.password = password;
 	}
 
+	/**
+	 * Constructor de User con id, nombre de usuario, mail y contraseña.
+	 * 
+	 * @param iduser   - Número entero identificativo del usuario
+	 * @param username - Cadena de caracteres con el nombre de usuario
+	 * @param mail     - Cadena de caracteres con la dirección de E-Mail del usuario
+	 * @param password - Cadena de caracteres con la contraseña del usuario
+	 */
 	public User(int iduser, String username, String mail, String password) {
 		super();
 		this.iduser = iduser;

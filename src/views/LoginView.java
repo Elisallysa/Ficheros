@@ -25,8 +25,15 @@ import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Clase de la vista de Login de usuario.
+ * 
+ * @author elisa
+ *
+ */
 public class LoginView {
 
+	// COMPONENTES DE LA VISTA
 	private JFrame frame;
 	private JTextField tfMail;
 	private JPasswordField pwfPassword;
@@ -36,23 +43,34 @@ public class LoginView {
 	private JLabel lblNewToNetflix;
 	private JLabel lblJoin;
 	private JLabel lblNetflixImg;
-	private UserDAO userDAO;
 	private JLabel lblForgotPwd;
 	private JButton btnLogin;
+	private UserDAO userDAO;
 	private User usuario;
 
+	/**
+	 * Creación de la vista. Se inicializa, se hace visible el marco y se reserva
+	 * memoria para el usuario DAO.
+	 */
 	public LoginView() {
 		initialize();
 		frame.setVisible(true);
 		this.userDAO = new UserDAO();
 	}
 
+	/**
+	 * Método que inicializa los contenidos del marco. Y se llaman los métodos que
+	 * configuran componentes y listeners.
+	 */
 	public void initialize() {
 		frame = new JFrame();
 		configureUIComponents();
 		configureUIListeners();
 	}
 
+	/**
+	 * Método que configura los componentes de la vista.
+	 */
 	public void configureUIComponents() {
 		frame.getContentPane().setLayout(null);
 		frame.getContentPane().setBackground(Color.BLACK);
@@ -126,13 +144,18 @@ public class LoginView {
 		frame.getContentPane().add(btnLogin);
 	}
 
+	/**
+	 * Método que configura los listeners de la vista.
+	 */
 	public void configureUIListeners() {
+		// Botón de inicio de sesión
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				login();
 			}
 		});
 
+		// Con el listener de este Label se regresa a la vista anterior
 		lblJoin.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -141,6 +164,8 @@ public class LoginView {
 			}
 		});
 
+		// Con el listener de este Label se abre una vista de solicitud de código para
+		// cambiar contraseña
 		lblForgotPwd.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -151,15 +176,16 @@ public class LoginView {
 	}
 
 	/**
-	 * M�todo que obtiene el texto del campo de texto del mail de usuario y la
-	 * contrase�a y comprueba que se encuentra en la BD o no.
+	 * Método que obtiene el texto del campo de texto del mail de usuario y la
+	 * contraseña y comprueba que se encuentra en la BD para permitir el acceso a la
+	 * aplicación.
 	 */
 	public void login() {
 		String mail = tfMail.getText();
 		String password = new String(pwfPassword.getPassword());
 		usuario = new User(0, mail, PasswordHasher.hashIt(password, "123456789"));
-		boolean loggedIn = userDAO.login(usuario); // Llamamos al m�todo login de la clase userDAO para comprobar que el
-													// usuario se encuentra o no en la BD
+		boolean loggedIn = userDAO.login(usuario); // Llamamos al método login de la clase userDAO para comprobar que el
+													// mail y contraseña corresponden a un usuario de la BD
 
 		/*
 		 * Si en UsuarioDAO obtenemos un registro con los datos del usuario, loggedIn es
@@ -167,13 +193,15 @@ public class LoginView {
 		 * buscador de shows de Netflix. Si no, lanza un mensaje que informa que el
 		 * nombre de usuario o contrase�a son inv�lidos.
 		 */
-		if (loggedIn && userDAO.isActivated(usuario)) {
+		if (loggedIn && userDAO.isActivated(usuario)) { // Si el usuario se encuentra en la BD y está activado se
+														// permite el inicio de sesión
 			JOptionPane.showMessageDialog(btnLogin, "Login successful!");
 			new SearchView(userDAO.getUsername(usuario));
 			frame.dispose();
 		} else if (loggedIn && !userDAO.isActivated(usuario)) {
 			JOptionPane.showMessageDialog(btnLogin, "User activation pending. Please activate your account.");
-			new UserActivationView();
+			new UserActivationView(); // Si el usuario no está activo se le redirige a la vista de activación de
+										// usuario
 			frame.dispose();
 		} else {
 			JOptionPane.showMessageDialog(btnLogin, "Invalid E-mail or password");
